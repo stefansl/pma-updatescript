@@ -7,7 +7,9 @@ IMPORTANT: Open it and correct the settings.
 
 ## Usage
 For installing the latest version start the script like this
+
     sh pma-update.sh
 	
 If you want to install a specified version
+
     sh pma-update.sh 3.5.0
