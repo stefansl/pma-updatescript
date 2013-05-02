@@ -7,14 +7,19 @@
 # not work!
 ##
 LOCATION=/var/www  #directory where PMA is installed. without slash at the end
-USER=confixx        #User
-GROUP=confixx       #Group 
+USER=stefan        #User
+GROUP=stefan       #Group 
 VERSIONLINK=http://www.phpmyadmin.net/home_page/version.php
 
 
 ##
 # Don't change anything from here
 ##
+
+# Get the local installed version
+VERSIONLOCAL=$(sed -ne '1p' $LOCATION/pma/Documentation.txt | cut -d' ' -f 2);
+
+# Get latest version
 if [ $1 ]
 then
 	#If version parameter exists, use it
@@ -23,9 +28,16 @@ else
 	# Find out latest version
 	VERSION=$(wget -q -O  /tmp/phpMyAdmin_Update.html  $VERSIONLINK && sed -ne '1p' /tmp/phpMyAdmin_Update.html);
         # VERSION=$(wget -q -O /tmp/phpMyAdmin_Update.html http://www.phpmyadmin.net/home_pade/version.js && grep "var PMA_latest_version =" /tmp/phpMyAdmin_Update.html | sed s/var\ PMA\_latest\_version\ \=\ \'//g | sed s/\'\;//g);
- 
 fi
- 
+
+#Check the versions
+if [ $VERSION == $VERSIONLOCAL ]
+then
+	echo "Your phpMyAdmin-Installation is already the newest!";
+	exit 0;
+fi
+
+#Start the update
 if [ $VERSION ]
 then
         cd $LOCATION;
