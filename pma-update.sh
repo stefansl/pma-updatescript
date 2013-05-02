@@ -27,15 +27,15 @@ then
 else
 	# Find out latest version
 	VERSION=$(wget -q -O  /tmp/phpMyAdmin_Update.html  $VERSIONLINK && sed -ne '1p' /tmp/phpMyAdmin_Update.html);
-        # VERSION=$(wget -q -O /tmp/phpMyAdmin_Update.html http://www.phpmyadmin.net/home_pade/version.js && grep "var PMA_latest_version =" /tmp/phpMyAdmin_Update.html | sed s/var\ PMA\_latest\_version\ \=\ \'//g | sed s/\'\;//g);
+    
+    #Check the versions
+	if [ $VERSION == $VERSIONLOCAL ]
+	then
+		echo "Your phpMyAdmin-Installation is already the newest!";
+		exit 0;
+	fi
 fi
 
-#Check the versions
-if [ $VERSION == $VERSIONLOCAL ]
-then
-	echo "Your phpMyAdmin-Installation is already the newest!";
-	exit 0;
-fi
 
 #Start the update
 if [ $VERSION ]
@@ -57,7 +57,7 @@ then
                         rm -Rv $LOCATION/pma
                         mv -v $LOCATION/phpMyAdmin-$VERSION-all-languages $LOCATION/pma
                         chown -Rv $USER:$GROUP $LOCATION/pma
-                        echo "I succesfully updated phpMyAdmin to Version " $VERSION " in your directory " $LOCATION ". Enjoy!"
+                        echo "I succesfully updated phpMyAdmin from version " $VERSIONLOCAL " to " $VERSION " in your directory " $LOCATION ". Enjoy!"
                 else
                         echo "An error occured while downloading. I tried downloading from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/"$VERSION"/phpMyAdmin-"$VERSION"-all-languages.tar.bz2.";
                 fi
