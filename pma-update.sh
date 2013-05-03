@@ -21,7 +21,7 @@ VERSIONLINK=http://www.phpmyadmin.net/home_page/version.php
 # Check settings
 if [  -z "$LOCATION" -o -z "$USER" -o -z "$GROUP" ];
 then	
-	echo "Check you settings. LOCATION, USER and/or GROUP variables are still empty!";
+	echo "Check your settings, please. LOCATION, USER and/or GROUP variables are still empty!";
 	exit 1;
 fi
 
@@ -47,7 +47,7 @@ else
     #Check the versions
 	if [ $VERSION == $VERSIONLOCAL ]
 	then
-		echo "Your phpMyAdmin-Installation is already the newest!";
+		echo "Your phpMyAdmin installation is already the newest!";
 		exit 0;
 	fi
 fi
