@@ -1,5 +1,5 @@
 # phpMyAdmin updatescript for your shell
-Using script it will be easy to update to phpMyAdmin's latest version. Directly from your shell.
+With this script it will be easy to update to phpMyAdmin's latest version. Directly from your shell.
 
 ## Installation
 Copy the script to any location of your machine. 
