@@ -6,18 +6,34 @@
 # user and group your installation will possibly 
 # not work!
 ##
-LOCATION=/var/www  #directory where PMA is installed. without slash at the end
-USER=stefan        #User
-GROUP=stefan       #Group 
+LOCATION="" 	#directory where PMA is installed. without slash at the end. f.e. LOCATION="/var/www/" PMA location will be /var/www/pma
+USER=""        	#User
+GROUP=""       	#Group 
 VERSIONLINK=http://www.phpmyadmin.net/home_page/version.php
+
 
 
 ##
 # Don't change anything from here
 ##
 
+
+# Check settings
+if [  -z "$LOCATION" -o -z "$USER" -o -z "$GROUP" ];
+then	
+	echo "Check you settings. LOCATION, USER and/or GROUP variables are still empty!";
+	exit 1;
+fi
+
 # Get the local installed version
-VERSIONLOCAL=$(sed -ne '1p' $LOCATION/pma/Documentation.txt | cut -d' ' -f 2);
+if [ -f $LOCATION/pma/Documentation.txt ]
+then
+	VERSIONLOCAL=$(sed -ne '1p' $LOCATION/pma/Documentation.txt | cut -d' ' -f 2);
+else
+	echo "Did not found a working installation. Check your settings, please.";
+	exit 1;
+fi
+
 
 # Get latest version
 if [ $1 ]
