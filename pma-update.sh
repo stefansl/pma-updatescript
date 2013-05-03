@@ -26,9 +26,9 @@ then
 fi
 
 # Get the local installed version
-if [ -f $LOCATION/pma/Documentation.txt ]
+if [ -f $LOCATION/pma/README ]
 then
-	VERSIONLOCAL=$(sed -ne '1p' $LOCATION/pma/Documentation.txt | cut -d' ' -f 2);
+	VERSIONLOCAL=$(sed -n 's/^Version \(.*\)$/\1/p' $LOCATION/pma/README);
 else
 	echo "Did not found a working installation. Check your settings, please.";
 	exit 1;
@@ -47,7 +47,7 @@ else
     #Check the versions
 	if [ $VERSION == $VERSIONLOCAL ]
 	then
-		echo "Your phpMyAdmin installation is already the newest!";
+		echo "Your phpMyAdmin installation is already the newest! Version: "$VERSIONLOCAL;
 		exit 0;
 	fi
 fi
