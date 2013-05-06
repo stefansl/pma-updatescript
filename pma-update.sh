@@ -6,10 +6,11 @@
 # user and group your installation will possibly
 # not work!
 ##
-LOCATION=""     #directory where PMA is installed. without slash at the end. f.e. LOCATION="/var/www/" PMA location will be /var/www/pma
+LOCATION=""     #directory where PMA is installed. without slash at the end. f.e. LOCATION="/var/www"
+PMA=""          #name of the phpmyadmin folder. f.e. pma or phpMyAdmin
 USER=""         #User
 GROUP=""        #Group
-VERSIONLINK=http://www.phpmyadmin.net/home_page/version.php
+VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 
 
 
@@ -19,15 +20,15 @@ VERSIONLINK=http://www.phpmyadmin.net/home_page/version.php
 
 
 # Check settings
-if [  -z "$LOCATION" -o -z "$USER" -o -z "$GROUP" ]; then
-    echo "Check your settings, please. LOCATION, USER and/or GROUP variables are still empty!";
+if [  -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
+    echo "Check your settings, please. LOCATION, PMA, USER and/or GROUP variables are still empty!";
     exit 1;
 fi
 
 # Get the local installed version
-if [ -f $LOCATION/pma/README ];
+if [ -f $LOCATION/$PMA/README ];
 then
-    VERSIONLOCAL=$(sed -n 's/^Version \(.*\)$/\1/p' $LOCATION/pma/README);
+    VERSIONLOCAL=$(sed -n 's/^Version \(.*\)$/\1/p' $LOCATION/$PMA/README);
     echo "Found local installation version" $VERSIONLOCAL;
 else
     echo "Did not found a working installation. Check your settings, please.";
@@ -72,10 +73,10 @@ if [ -n "$VERSION" ]; then
         wget --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-all-languages.tar.bz2
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-all-languages.tar.bz2" ]
         then    tar xjvf phpMyAdmin-$VERSION-all-languages.tar.bz2
-            mv -v $LOCATION/pma/config.inc.php $LOCATION/phpMyAdmin-$VERSION-all-languages/
-            rm -Rv $LOCATION/pma
-            mv -v $LOCATION/phpMyAdmin-$VERSION-all-languages $LOCATION/pma
-            chown -Rv $USER:$GROUP $LOCATION/pma
+            mv -v $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-all-languages/
+            rm -Rv $LOCATION/$PMA
+            mv -v $LOCATION/phpMyAdmin-$VERSION-all-languages $LOCATION/$PMA
+            chown -Rv $USER:$GROUP $LOCATION/$PMA
             echo "I succesfully updated phpMyAdmin from version " $VERSIONLOCAL " to " $VERSION " in your directory " $LOCATION ". Enjoy!"
         else
             echo "An error occured while downloading. I tried downloading from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/"$VERSION"/phpMyAdmin-"$VERSION"-all-languages.tar.bz2.";
