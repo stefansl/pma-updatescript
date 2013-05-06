@@ -10,10 +10,10 @@ LOCATION=""     #directory where PMA is installed. without slash at the end. f.e
 PMA=""          #name of the phpmyadmin folder. f.e. pma or phpMyAdmin
 USER=""         #User
 GROUP=""        #Group
-VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 LOGLEVEL=1      #set 0 for quiet mode (no output)
                 #set 1 to output warnings (DEFAULT)
                 #set 2 to output all messages
+VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 
 ##
 # Don't change anything from here
