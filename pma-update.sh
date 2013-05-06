@@ -55,7 +55,7 @@ if [ -n "$1" ]; then
 
     #Check the versions
     if [ $VERSION = $VERSIONLOCAL ]; then
-        info "phpMyAdmin" $VERSIONLOCAL "is installed already!";
+        info "phpMyAdmin $VERSIONLOCAL is installed already!";
         exit 0;
     fi
 else
@@ -78,7 +78,7 @@ if [ -n "$VERSION" ]; then
 
     if [ $MYLOCATION != $LOCATION ]
     then
-        log "An error occured while changing the directory. Please check your settings! Your given directory:" $LOCATION;
+        log "An error occured while changing the directory. Please check your settings! Your given directory: $LOCATION";
         pwd;
 
     else
@@ -90,11 +90,17 @@ if [ -n "$VERSION" ]; then
             rm -Rv $LOCATION/$PMA
             mv -v $LOCATION/phpMyAdmin-$VERSION-all-languages $LOCATION/$PMA
             chown -Rv $USER:$GROUP $LOCATION/$PMA
-            log "I succesfully updated phpMyAdmin from version " $VERSIONLOCAL " to " $VERSION " in your directory " $LOCATION ". Enjoy!"
+            # Remove downloaded package
+            rm phpMyAdmin-$VERSION-all-languages.tar.bz2
+            # Remove setup-folder for security issues
+            rm -R $LOCATION/$PMA/setup
+            # Remove examples-folder
+            rm -R $LOCATION/$PMA/examples
+            log "I succesfully updated phpMyAdmin from version $VERSIONLOCAL to $VERSION in your directory $LOCATION. Enjoy!"
         else
-            log "An error occured while downloading. I tried downloading from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/"$VERSION"/phpMyAdmin-"$VERSION"-all-languages.tar.bz2.";
+            log "An error occured while downloading. I tried downloading from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-all-languages.tar.bz2.";
         fi
     fi
 else
-    log "Something went wrong while detecting the newest Version of PMA. :( Maybe this link here is dead: $VERSIONLINK";
+    log "Something went wrong while detecting the newest Version of phpMyAdmin. :( Maybe this link here is dead: $VERSIONLINK";
 fi
