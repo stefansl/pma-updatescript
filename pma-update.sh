@@ -11,8 +11,9 @@ PMA=""          #name of the phpmyadmin folder. f.e. pma or phpMyAdmin
 USER=""         #User
 GROUP=""        #Group
 VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
-QUIET=0         #set 1 if you don't want any output at all
-VERBOSE=0       #set 1 to output all messages (overrides QUIET)
+LOGLEVEL=1      #set 0 for quiet mode (no output)
+                #set 1 to output warnings (DEFAULT)
+                #set 2 to output all messages
 
 ##
 # Don't change anything from here
@@ -20,14 +21,14 @@ VERBOSE=0       #set 1 to output all messages (overrides QUIET)
 
 # output warnings
 function log() {
-    if [ $QUIET -ne 1 -o $VERBOSE -eq 1 ]; then
+    if [ LOGLEVEL > 0 ]; then
         echo "$@";
     fi
 }
 
 # output additional messages
 function info() {
-    if [ $VERBOSE -eq 1 ]; then
+    if [ LOGLEVEL == 2 ]; then
         echo "$@";
     fi
 }
@@ -69,6 +70,15 @@ else
     fi
 fi
 
+#Set output parameters
+WGETLOG="-q";
+TARLOG="xjf";
+VERBOSELOG=""
+if [ LOGLEVEL == 2 ]; then
+    WGETLOG="-v";
+    TARLOG="xjvf";
+    VERBOSELOG="-v";
+fi
 
 #Start the update
 if [ -n "$VERSION" ]; then
@@ -82,20 +92,20 @@ if [ -n "$VERSION" ]; then
         pwd;
 
     else
-        wget --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-all-languages.tar.bz2
+        wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-all-languages.tar.bz2
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-all-languages.tar.bz2" ]
         then
-            tar xjvf phpMyAdmin-$VERSION-all-languages.tar.bz2
-            mv -v $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-all-languages/
-            rm -Rv $LOCATION/$PMA
-            mv -v $LOCATION/phpMyAdmin-$VERSION-all-languages $LOCATION/$PMA
-            chown -Rv $USER:$GROUP $LOCATION/$PMA
+            tar $TARLOG phpMyAdmin-$VERSION-all-languages.tar.bz2
+            mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-all-languages/
+            rm -R $VERBOSELOG $LOCATION/$PMA
+            mv $VERBOSELOG $LOCATION/phpMyAdmin-$VERSION-all-languages $LOCATION/$PMA
+            chown -R $VERBOSELOG $USER:$GROUP $LOCATION/$PMA
             # Remove downloaded package
-            rm phpMyAdmin-$VERSION-all-languages.tar.bz2
+            rm $VERBOSELOG phpMyAdmin-$VERSION-all-languages.tar.bz2
             # Remove setup-folder for security issues
-            rm -R $LOCATION/$PMA/setup
+            rm -R $VERBOSELOG $LOCATION/$PMA/setup
             # Remove examples-folder
-            rm -R $LOCATION/$PMA/examples
+            rm -R $VERBOSELOG $LOCATION/$PMA/examples
             log "I succesfully updated phpMyAdmin from version $VERSIONLOCAL to $VERSION in your directory $LOCATION. Enjoy!"
         else
             log "An error occured while downloading. I tried downloading from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-all-languages.tar.bz2.";
