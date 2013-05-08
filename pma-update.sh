@@ -7,7 +7,7 @@
 # not work!
 ##
 LOCATION=""     #directory where PMA is installed. without slash at the end. f.e. LOCATION="/var/www"
-PMA=""          #name of the phpmyadmin folder. f.e. pma or phpMyAdmin
+PMA="pma"          #name of the phpmyadmin folder. f.e. pma or phpMyAdmin
 USER=""         #User
 GROUP=""        #Group
 LOGLEVEL=1      #set 0 for quiet mode (no output)
