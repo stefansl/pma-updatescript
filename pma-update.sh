@@ -20,18 +20,19 @@ VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 ##
 
 # output warnings
-function log() {
-    if [ LOGLEVEL > 0 ]; then
+log() {
+	if [ $LOGLEVEL > 0 ]; then
         echo "$@";
     fi
 }
 
 # output additional messages
-function info() {
-    if [ LOGLEVEL == 2 ]; then
+info() {
+    if [ $LOGLEVEL -eq 2 ]; then
         echo "$@";
     fi
 }
+
 
 # Check settings
 if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
@@ -74,7 +75,7 @@ fi
 WGETLOG="-q";
 TARLOG="xjf";
 VERBOSELOG=""
-if [ LOGLEVEL == 2 ]; then
+if [ $LOGLEVEL -eq 2 ]; then
     WGETLOG="-v";
     TARLOG="xjvf";
     VERBOSELOG="-v";
