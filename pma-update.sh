@@ -1,6 +1,10 @@
 #!/bin/sh
 
 ##
+# PHPMYADMIN-SCRIPT
+# https://github.com/stefansl/pma-updatescript/
+# Author: Stefan Schulz-Lauterbach & Michael Riehemann
+#
 # SETTINGS
 # Please check this settings. Without changing the
 # user and group your installation will possibly
