@@ -10,9 +10,9 @@
 # user and group your installation will possibly
 # not work!
 ##
-LOCATION="" # Directory of PMA is installation. Without a slash at the end. For example: LOCATION="/var/www"
-LANGUAGE="" # Language of PMA. For example: english or all-languages
+LOCATION="" # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
 PMA=""      # Name of the PMA folder. For example: pma or phpMyAdmin
+LANGUAGE="" # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
 USER=""     # User of files
 GROUP=""    # Group of files
 LOGLEVEL=1  # set 0 for quiet mode (no output)
@@ -38,11 +38,14 @@ info() {
     fi
 }
 
-
 # Check settings
 if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
     log "Please, check your settings. The variables LOCATION, PMA, USER and/or GROUP are mandatory!";
     exit 1;
+fi
+
+if [ -z "$LANGUAGE"]; then
+    LANGUAGE="all-languages"
 fi
 
 # Get the local installed version
@@ -98,23 +101,23 @@ if [ -n "$VERSION" ]; then
         pwd;
 
     else
-        wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.zip
-        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.zip" ]
+        wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
+        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2" ]
         then
-            unzip $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.zip
+            tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
             mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE/
             rm -R $VERBOSELOG $LOCATION/$PMA
             mv $VERBOSELOG $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE $LOCATION/$PMA
             chown -R $VERBOSELOG $USER:$GROUP $LOCATION/$PMA
             # Remove downloaded package
-            rm $VERBOSELOG phpMyAdmin-$VERSION-$LANGUAGE.zip
+            rm $VERBOSELOG phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
             # Remove setup-folder for security issues
             rm -R $VERBOSELOG $LOCATION/$PMA/setup
             # Remove examples-folder
             rm -R $VERBOSELOG $LOCATION/$PMA/examples
-            log "I succesfully updated phpMyAdmin from version $VERSIONLOCAL to $VERSION in your directory $LOCATION. Enjoy!"
+            log "PhpMyAdmin successfully updated from version $VERSIONLOCAL to $VERSION in $LOCATION. Enjoy!"
         else
-            log "An error occured while downloading. I tried downloading from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.zip.";
+            log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.zip.";
         fi
     fi
 else
