@@ -3,7 +3,7 @@
 ##
 # PHPMYADMIN-SCRIPT
 # https://github.com/stefansl/pma-updatescript/
-# Author: Stefan Schulz-Lauterbach & Michael Riehemann
+# Author: Stefan Schulz-Lauterbach, Michael Riehemann, Igor Buyanov
 #
 # SETTINGS
 # Please check this settings. Without changing the
