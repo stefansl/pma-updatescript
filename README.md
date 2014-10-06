@@ -3,7 +3,8 @@ This script will update your current phpMyAdmin to the latest version directly f
 
 ## Requirements
 - wget
-- zip
+- tar
+- bzip2
 
 ## Installation
 Copy the script to any location of your machine.   
@@ -11,7 +12,7 @@ IMPORTANT: You need to edit the script to set the correct settings.
 
 ## Settings
 
-You need to set the variables LOCATION, PMA, LANGUAGE, USER and GROUP. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
+You need to set the variables LOCATION, PMA, USER and GROUP. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
 installation will be installed into "/var/www/pma".
 
 ## Usage
