@@ -32,7 +32,7 @@ FORCE="off"
 ##
 
 # output help
-helpme() {
+usage() {
 	echo "usage: sh pma-update.sh [-hvf] [-r version]";
 	echo "-h		this help";
 	echo "-v		output all warnings";
@@ -42,20 +42,38 @@ helpme() {
 
 
 # get the flags
-set -- `getopt hvfr: "$@"` && helpme
-[ $# -lt 1 ] && exit 1	# getopt failed
-while [ $# -gt 0 ]
+#set -- `getopt hvfr: "$@"`
+#[ $# -lt 1 ] && exit 1	# getopt failed
+params="$(getopt -o hvfr: -l help --name "$cmdname" -- "$@")"
+
+if [ $? -ne 0 ]
+then
+    usage
+fi
+
+eval set -- "$params"
+unset params
+
+while true
 do
     case "$1" in
-    -h) helpme;;
-    -v)	LOGLEVEL=2;;
-	-f)	FORCE=on;;
-	-r) VERSION="$2"; shift;;
-	--)	shift; break;;
-	-*) echo >&2 \
-		helpme
-		exit 1;;
-	*)	break;;		# terminate while loop
+    -v)	
+    		LOGLEVEL=2;;
+	-f)	
+			FORCE=on;;
+	-r) 
+			VERSION="$2"; shift;;
+	-h|--help)
+            usage
+            exit
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            usage
+            ;;
     esac
     shift
 done
@@ -82,8 +100,8 @@ if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
     exit 1;
 fi
 
-if [ -z "$LANGUAGE"]; then
-    LANGUAGE="all-languages"
+if [ -z "$LANGUAGE" ]; then
+    LANGUAGE="all-languages";
 fi
 
 # Get the local installed version
