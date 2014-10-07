@@ -18,11 +18,17 @@ installation will be installed into "/var/www/pma".
 ## Usage
 For updating phpMyAdmin to the latest version, execute the shell script like this:
 
-    ./pma-update.sh
+    sh pma-update.sh
 
 If you want to install a specified version
 
-    ./pma-update.sh 3.5.0
+    sh pma-update.sh -f 3.5.0
+    
+sh pma-update.sh [-hvf] [-r version]
+-h		this help
+-v		output all warnings
+-f		force download, even if this version is installed already
+-r version	choose a different version than the latest.
 
 
  
