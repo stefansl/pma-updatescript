@@ -22,10 +22,11 @@ For updating phpMyAdmin to the latest version, execute the shell script like thi
 
 If you want to install a specified version
 
-    sh pma-update.sh -f 3.5.0
+    sh pma-update.sh -r 3.5.0
     
-sh pma-update.sh [-hvf] [-r version]   sdfsd
--h    this help  
--v    output all warnings  
--f    force download, even if this version is installed already  
--r version    choose a different version than the latest.  
+### More options
+    sh pma-update.sh [-hvf] [-r version]  
+    -h    this help  
+    -v    output all warnings  
+    -f    force download, even if this version is installed already  
+    -r version    choose a different version than the latest.  
