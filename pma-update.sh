@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ##
-# PHPMYADMIN-SCRIPT
+# PHPMYADMIN UPDATE SCRIPT
 # https://github.com/stefansl/pma-updatescript/
 # Author: Stefan Schulz-Lauterbach, Michael Riehemann, Igor Buyanov
 #
@@ -19,10 +19,66 @@ LOGLEVEL=1  # set 0 for quiet mode (no output)
             # set 1 to output warnings (DEFAULT)
             # set 2 to output all messages
 VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
+FORCE="off"
+
+
+
+# all command line switches are processed,
+# "$@" contains all file names
+
 
 ##
 # Don't change anything from here
 ##
+
+# output help
+usage() {
+	echo "usage: sh pma-update.sh [-hvf] [-r version]";
+	echo "-h		this help";
+	echo "-v		output all warnings";
+	echo "-f		force download, even if this version is installed already";
+	echo "-r version	choose a different version than the latest.";
+}
+
+
+# get the flags
+#set -- `getopt hvfr: "$@"`
+#[ $# -lt 1 ] && exit 1	# getopt failed
+params="$(getopt -o hvfr: -l help --name "$cmdname" -- "$@")"
+
+if [ $? -ne 0 ]
+then
+    usage
+fi
+
+eval set -- "$params"
+unset params
+
+while true
+do
+    case "$1" in
+    -v)	
+    		LOGLEVEL=2;;
+	-f)	
+			FORCE=on;;
+	-r) 
+			VERSION="$2"; shift;;
+	-h|--help)
+            usage
+            exit
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            usage
+            ;;
+    esac
+    shift
+done
+
+
 
 # output warnings
 log() {
@@ -44,8 +100,8 @@ if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
     exit 1;
 fi
 
-if [ -z "$LANGUAGE"]; then
-    LANGUAGE="all-languages"
+if [ -z "$LANGUAGE" ]; then
+    LANGUAGE="all-languages";
 fi
 
 # Get the local installed version
@@ -59,14 +115,16 @@ else
 fi
 
 # Get latest version
-if [ -n "$1" ]; then
-    #If version parameter exists, use it
-    VERSION=$1;
+
+if [ -n "$VERSION" ]; then
 
     #Check the versions
     if [ $VERSION = $VERSIONLOCAL ]; then
         info "phpMyAdmin $VERSIONLOCAL is already installed!";
-        exit 0;
+        if [ "$FORCE" != "on" ]; then
+        	exit 0;
+        fi
+        info "I will install it anyway.";
     fi
 else
     # Find out latest version
@@ -75,7 +133,10 @@ else
     #Check the versions
     if [ $VERSION = $VERSIONLOCAL ]; then
         info "You have the latest version of phpMyAdmin installed!";
-        exit 0;
+        if [ "$FORCE" != "on" ]; then
+        	exit 0;
+        fi
+        info "I will install it anyway.";
     fi
 fi
 
