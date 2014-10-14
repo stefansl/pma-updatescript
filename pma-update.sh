@@ -10,40 +10,40 @@
 # user and group your installation will possibly
 # not work!
 ##
-LOCATION="" # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
-PMA=""      # Name of the PMA folder. For example: pma or phpMyAdmin
-LANGUAGE="" # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
-USER=""     # User of files
-GROUP=""    # Group of files
-LOGLEVEL=1  # set 0 for quiet mode (no output)
-            # set 1 to output warnings (DEFAULT)
-            # set 2 to output all messages
+
+LOCATION=""     # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
+PMA=""          # Name of the PMA folder. For example: pma or phpMyAdmin
+LANGUAGE=""     # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
+USER=""         # User of files
+GROUP=""        # Group of files
+LOGLEVEL=1      # set 0 for quiet mode (no output)
+                # set 1 to output warnings (DEFAULT)
+                # set 2 to output all messages
 VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 FORCE="off"
 
 
 
-# all command line switches are processed,
-# "$@" contains all file names
+
+################################################
+#                                              #
+#   DON'T CHANGE ANYTHING FROM HERE            #
+#   unless you're not into shell scripting     #
+#                                              #
+################################################
 
 
-##
-# Don't change anything from here
-##
-
-# output help
+# Output help
 usage() {
-	echo "usage: sh pma-update.sh [-hvf] [-r version]";
-	echo "-h		this help";
-	echo "-v		output all warnings";
-	echo "-f		force download, even if this version is installed already";
-	echo "-r version	choose a different version than the latest.";
+    echo "usage: sh pma-update.sh [-hvf] [-r version]";
+    echo "-h        this help";
+    echo "-v        output all warnings";
+    echo "-f        force download, even if this version is installed already";
+    echo "-r version    choose a different version than the latest.";
 }
 
 
-# get the flags
-#set -- `getopt hvfr: "$@"`
-#[ $# -lt 1 ] && exit 1	# getopt failed
+# Options
 params="$(getopt -o hvfr: -l help --name "$cmdname" -- "$@")"
 
 if [ $? -ne 0 ]
@@ -57,42 +57,37 @@ unset params
 while true
 do
     case "$1" in
-    -v)	
-    		LOGLEVEL=2;;
-	-f)	
-			FORCE=on;;
-	-r) 
-			VERSION="$2"; shift;;
-	-h|--help)
+        -v) LOGLEVEL=2;;
+        -f) FORCE=on;;
+        -r) VERSION="$2"; shift;;
+        -h|--help)
             usage
-            exit
-            ;;
+            exit;;
         --)
             shift
-            break
-            ;;
+            break;;
         *)
-            usage
-            ;;
+            usage;;
     esac
     shift
 done
 
 
-
-# output warnings
+# Output warnings
 log() {
     if [ $LOGLEVEL > 0 ]; then
         echo "$@";
     fi
 }
 
-# output additional messages
+
+# Output additional messages
 info() {
     if [ $LOGLEVEL -eq 2 ]; then
         echo "$@";
     fi
 }
+
 
 # Check settings
 if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
@@ -104,6 +99,7 @@ if [ -z "$LANGUAGE" ]; then
     LANGUAGE="all-languages";
 fi
 
+
 # Get the local installed version
 if [ -f $LOCATION/$PMA/README ];
 then
@@ -114,6 +110,7 @@ else
     exit 1;
 fi
 
+
 # Get latest version
 
 if [ -n "$VERSION" ]; then
@@ -122,25 +119,28 @@ if [ -n "$VERSION" ]; then
     if [ $VERSION = $VERSIONLOCAL ]; then
         info "phpMyAdmin $VERSIONLOCAL is already installed!";
         if [ "$FORCE" != "on" ]; then
-        	exit 0;
+            exit 0;
         fi
         info "I will install it anyway.";
     fi
 else
+
     # Find out latest version
     VERSION=$(wget -q -O /tmp/phpMyAdmin_Update.html $VERSIONLINK && sed -ne '1p' /tmp/phpMyAdmin_Update.html);
+
 
     #Check the versions
     if [ $VERSION = $VERSIONLOCAL ]; then
         info "You have the latest version of phpMyAdmin installed!";
         if [ "$FORCE" != "on" ]; then
-        	exit 0;
+            exit 0;
         fi
         info "I will install it anyway.";
     fi
 fi
 
-#Set output parameters
+
+# Set output parameters
 WGETLOG="-q";
 TARLOG="xjf";
 VERBOSELOG=""
@@ -150,7 +150,8 @@ if [ $LOGLEVEL -eq 2 ]; then
     VERBOSELOG="-v";
 fi
 
-#Start the update
+
+# Start update
 if [ -n "$VERSION" ]; then
     cd $LOCATION;
 
@@ -182,5 +183,6 @@ if [ -n "$VERSION" ]; then
         fi
     fi
 else
-    log "Something went wrong while getting the version of phpMyAdmin. :( Maybe this link here is dead: $VERSIONLINK";
+    log "Something went wrong while downloading the latest version of phpMyAdmin. :( "
+    log "Maybe this link here is dead: $VERSIONLINK";
 fi
