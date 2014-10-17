@@ -4,26 +4,9 @@
 # PHPMYADMIN UPDATE SCRIPT
 # https://github.com/stefansl/pma-updatescript/
 # Author: Stefan Schulz-Lauterbach, Michael Riehemann, Igor Buyanov
-#
-# SETTINGS
-# Please check this settings. Without changing the
-# user and group your installation will possibly
-# not work!
 ##
 
-LOCATION=""     # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
-PMA=""          # Name of the PMA folder. For example: pma or phpMyAdmin
-LANGUAGE=""     # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
-USER=""         # User of files
-GROUP=""        # Group of files
-LOGLEVEL=1      # set 0 for quiet mode (no output)
-                # set 1 to output warnings (DEFAULT)
-                # set 2 to output all messages
-VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
-FORCE="off"
-
-
-
+command . ./config.sh || echo "No config file found"
 
 ################################################
 #                                              #
@@ -36,9 +19,9 @@ FORCE="off"
 # Output help
 usage() {
     echo "usage: sh pma-update.sh [-hvf] [-r version]";
-    echo "-h        this help";
-    echo "-v        output all warnings";
-    echo "-f        force download, even if this version is installed already";
+    echo "-h            this help";
+    echo "-v            output all warnings";
+    echo "-f            force download, even if this version is installed already";
     echo "-r version    choose a different version than the latest.";
 }
 
@@ -112,7 +95,6 @@ fi
 
 
 # Get latest version
-
 if [ -n "$VERSION" ]; then
 
     #Check the versions
@@ -123,6 +105,7 @@ if [ -n "$VERSION" ]; then
         fi
         info "I will install it anyway.";
     fi
+    
 else
 
     # Find out latest version
@@ -183,6 +166,6 @@ if [ -n "$VERSION" ]; then
         fi
     fi
 else
-    log "Something went wrong while downloading the latest version of phpMyAdmin. :( "
+    log "Something went wrong while getting the version of phpMyAdmin. :( "
     log "Maybe this link here is dead: $VERSIONLINK";
 fi

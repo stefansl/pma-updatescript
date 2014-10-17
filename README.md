@@ -12,7 +12,7 @@ IMPORTANT: You need to edit the script to set the correct settings.
 
 ## Settings
 
-You need to set the variables LOCATION, PMA, USER and GROUP. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
+Open the file config.sh and edit the variables LOCATION, PMA, USER and GROUP. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
 installation will be installed into "/var/www/pma".
 
 ## Usage
