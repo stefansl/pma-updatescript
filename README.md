@@ -10,6 +10,10 @@ This script will update your current phpMyAdmin to the latest version directly f
 Copy the script to any location of your machine.   
 IMPORTANT: You need to edit the script to set the correct settings.
 
+If you want to install a cronjob, run
+	
+	sh install-cronjob.sh
+
 ## Settings
 
 Open the file config.sh and edit the variables LOCATION, PMA, USER and GROUP. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
