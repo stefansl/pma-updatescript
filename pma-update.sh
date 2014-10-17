@@ -98,7 +98,7 @@ fi
 if [ -n "$VERSION" ]; then
 
     #Check the versions
-    if [ $VERSION = $VERSIONLOCAL ]; then
+    if [ "$VERSION" = "$VERSIONLOCAL" ]; then
         info "phpMyAdmin $VERSIONLOCAL is already installed!";
         if [ "$FORCE" != "on" ]; then
             exit 0;
@@ -113,7 +113,7 @@ else
 
 
     #Check the versions
-    if [ $VERSION = $VERSIONLOCAL ]; then
+    if [ "$VERSION" = "$VERSIONLOCAL" ]; then
         info "You have the latest version of phpMyAdmin installed!";
         if [ "$FORCE" != "on" ]; then
             exit 0;
