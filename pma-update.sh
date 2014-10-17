@@ -146,23 +146,23 @@ if [ -n "$VERSION" ]; then
         pwd;
 
     else
-        wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
-        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2" ]
+        wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
+        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]
         then
-            tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
+            tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
             mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE/
             rm -R $VERBOSELOG $LOCATION/$PMA
             mv $VERBOSELOG $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE $LOCATION/$PMA
             chown -R $VERBOSELOG $USER:$GROUP $LOCATION/$PMA
             # Remove downloaded package
-            rm $VERBOSELOG phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
+            rm $VERBOSELOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
             # Remove setup-folder for security issues
             rm -R $VERBOSELOG $LOCATION/$PMA/setup
             # Remove examples-folder
             rm -R $VERBOSELOG $LOCATION/$PMA/examples
             log "PhpMyAdmin successfully updated from version $VERSIONLOCAL to $VERSION in $LOCATION. Enjoy!"
         else
-            log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.zip.";
+            log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE.";
         fi
     fi
 else

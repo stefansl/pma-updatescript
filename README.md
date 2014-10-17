@@ -15,6 +15,8 @@ IMPORTANT: You need to edit the script to set the correct settings.
 Open the file config.sh and edit the variables LOCATION, PMA, USER and GROUP. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
 installation will be installed into "/var/www/pma".
 
+If you want, change the compression type. "tar.bz2", "tar.gz" and "zip" are available.
+
 ## Usage
 For updating phpMyAdmin to the latest version, execute the shell script like this:
 
