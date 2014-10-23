@@ -20,14 +20,14 @@ PMA=""              # Name of the PMA folder. For example: pma or phpMyAdmin
 LANGUAGE=""         # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
 USER=""             # User of files
 GROUP=""            # Group of files
-CTYPE="tar.gz"      # Compression type. default "tar.bz2". zip or tar.gz are possible, as well.
+CTYPE="tar.gz"      # Compression type. default "tar.gz". tar.bz2 is possible, as well.
 LOGLEVEL=1          # set 0 for quiet mode (no output)
                     # set 1 to output warnings (DEFAULT)
                     # set 2 to output all messages
 VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 FORCE="off"
 
-CONFIG_FILE="~/.pma-updaterc"
+CONFIG_FILE=~/.pma-updaterc
 
 
 ################################################
@@ -51,6 +51,7 @@ usage() {
 if [ -f $CONFIG_FILE ]; then
     command . $CONFIG_FILE;
 fi
+
 
 # Output warnings
 log() {
@@ -95,6 +96,11 @@ do
     shift
 done
 
+# Check location settings
+if [ -z "$LOCATION" -o -z "$PMA" ]; then
+    log "Please, check your settings. The variables LOCATION, PMA are mandatory!";
+    exit 1;
+fi
 
 # Get the local installed version
 if [ -f $LOCATION/$PMA/README ]; then
@@ -106,6 +112,7 @@ else
 fi
 
 
+
 # If $USER or $GROUP empty, read from installed phpMyAdmin
 if [ -z "$USER" ]; then
     USER=$(stat -c "%U" $LOCATION/$PMA/index.php);
@@ -114,9 +121,9 @@ if [ -z "$GROUP" ]; then
     GROUP=$(stat -c "%G" $LOCATION/$PMA/index.php);
 fi
 
-# Check settings
-if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
-    log "Please, check your settings. The variables LOCATION, PMA are mandatory!";
+# Check user/group settings
+if [ -z "$USER" -o -z "$GROUP" ]; then
+    log "Please, check your settings. Set USER and GROUP, please!";
     exit 1;
 fi
 
@@ -157,12 +164,20 @@ fi
 
 # Set output parameters
 WGETLOG="-q";
-TARLOG="xjf";
-VERBOSELOG=""
+VERBOSELOG="";
+if [ "$CTYPE" = "tar.gz" ]; then
+	TARLOG="xzf";
+elif [ "$CTYPE" = "tar.bz2" ]; then
+	TARLOG="xjf";
+fi
 if [ $LOGLEVEL -eq 2 ]; then
     WGETLOG="-v";
-    TARLOG="xjvf";
-    VERBOSELOG="-v";    
+    VERBOSELOG="-v";
+    if [ "$CTYPE" = "tar.gz" ]; then
+		TARLOG="xzfv";
+	elif [ "$CTYPE" = "tar.bz2" ]; then
+		TARLOG="xjfv";
+	fi
 fi
 
 
@@ -183,7 +198,7 @@ if [ -n "$VERSION" ]; then
         
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]; then
         
-            tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
+            tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE || exit 1;
             mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE/
             rm -R $VERBOSELOG $LOCATION/$PMA
             mv $VERBOSELOG $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE $LOCATION/$PMA
