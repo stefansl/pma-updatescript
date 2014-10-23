@@ -15,7 +15,7 @@
 # home folder from the user this script runs as. 
 ##
 
-LOCATION="/var/www"         # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
+LOCATION=""         # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
 PMA=""              # Name of the PMA folder. For example: pma or phpMyAdmin
 LANGUAGE=""         # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
 USER=""             # User of files
@@ -96,17 +96,6 @@ do
 done
 
 
-# Check settings
-if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
-    log "Please, check your settings. The variables LOCATION, PMA, USER and/or GROUP are mandatory!";
-    exit 1;
-fi
-
-if [ -z "$LANGUAGE" ]; then
-    LANGUAGE="all-languages";
-fi
-
-
 # Get the local installed version
 if [ -f $LOCATION/$PMA/README ];
 then
@@ -116,6 +105,26 @@ else
     log "Did not found a working installation. Please, check the script settings.";
     exit 1;
 fi
+
+
+# If $USER or $GROUP empty, read from installed phpMyAdmin
+if [ -z "$USER" ]; then
+	USER=$(stat -c "%U" $LOCATION/$PMA/index.php);
+fi
+if [ -z "$GROUP" ]; then
+	GROUP=$(stat -c "%G" $LOCATION/$PMA/index.php);
+fi
+
+# Check settings
+if [ -z "$LOCATION" -o -z "$PMA" -o -z "$USER" -o -z "$GROUP" ]; then
+    log "Please, check your settings. The variables LOCATION, PMA are mandatory!";
+    exit 1;
+fi
+
+if [ -z "$LANGUAGE" ]; then
+    LANGUAGE="all-languages";
+fi
+
 
 
 # Get latest version
