@@ -18,7 +18,7 @@ If you want to install a cronjob, run
 Open the file config.sh and edit the variables LOCATION, PMA. If you set f.e. LOCATION="/var/www" and PMA="pma" your PMA
 installation will be installed into "/var/www/pma".
 
-If you want, change the compression type. "tar.bz2", "tar.gz" and "zip" are available.
+If you want, change the compression type - "tar.gz" and "tar.bz2" are possible.
 
 ## User based settings 
 
