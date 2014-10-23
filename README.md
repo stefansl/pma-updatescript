@@ -4,7 +4,6 @@ This script will update your current phpMyAdmin to the latest version directly f
 ## Requirements
 - wget
 - tar
-- bzip2
 
 ## Installation
 Copy the script to any location of your machine.   
