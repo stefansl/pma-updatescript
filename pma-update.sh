@@ -7,8 +7,8 @@
 ##
 
 # SETTINGS
-# Please check this settings. Without changing the
-# user and group your installation will not work!
+# Please check this settings. Without changing 
+# location and pma your installation will not work!
 # 
 # Instead of changing these values below, 
 # you can place them in a .pma-updaterc file in the  
