@@ -20,14 +20,14 @@ PMA=""              # Name of the PMA folder. For example: pma or phpMyAdmin
 LANGUAGE=""         # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
 USER=""             # User of files
 GROUP=""            # Group of files
-CTYPE="tar.gz"     	# Compression type. default "tar.bz2". zip or tar.gz are possible, as well.
+CTYPE="tar.gz"      # Compression type. default "tar.bz2". zip or tar.gz are possible, as well.
 LOGLEVEL=1          # set 0 for quiet mode (no output)
                     # set 1 to output warnings (DEFAULT)
                     # set 2 to output all messages
 VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 FORCE="off"
 
-CONFIG_FILE="$HOME/.pma-updaterc"
+CONFIG_FILE="~/.pma-updaterc"
 
 
 ################################################
@@ -49,7 +49,7 @@ usage() {
 
 # If user based config exists, load it
 if [ -f $CONFIG_FILE ]; then
-	command . $CONFIG_FILE;
+    command . $CONFIG_FILE;
 fi
 
 # Output warnings
@@ -97,8 +97,7 @@ done
 
 
 # Get the local installed version
-if [ -f $LOCATION/$PMA/README ];
-then
+if [ -f $LOCATION/$PMA/README ]; then
     VERSIONLOCAL=$(sed -n 's/^Version \(.*\)$/\1/p' $LOCATION/$PMA/README);
     info "Found local installation version" $VERSIONLOCAL;
 else
@@ -109,10 +108,10 @@ fi
 
 # If $USER or $GROUP empty, read from installed phpMyAdmin
 if [ -z "$USER" ]; then
-	USER=$(stat -c "%U" $LOCATION/$PMA/index.php);
+    USER=$(stat -c "%U" $LOCATION/$PMA/index.php);
 fi
 if [ -z "$GROUP" ]; then
-	GROUP=$(stat -c "%G" $LOCATION/$PMA/index.php);
+    GROUP=$(stat -c "%G" $LOCATION/$PMA/index.php);
 fi
 
 # Check settings
@@ -163,25 +162,27 @@ VERBOSELOG=""
 if [ $LOGLEVEL -eq 2 ]; then
     WGETLOG="-v";
     TARLOG="xjvf";
-    VERBOSELOG="-v";
+    VERBOSELOG="-v";    
 fi
 
 
 # Start update
 if [ -n "$VERSION" ]; then
-    cd $LOCATION;
 
+    cd $LOCATION;
     MYLOCATION=`pwd`;
 
-    if [ $MYLOCATION != $LOCATION ]
-    then
+    if [ $MYLOCATION != $LOCATION ]; then
+    
         log "An error occured while changing the directory. Please check your settings! Your given directory: $LOCATION";
         pwd;
 
     else
+    
         wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
-        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]
-        then
+        
+        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]; then
+        
             tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
             mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE/
             rm -R $VERBOSELOG $LOCATION/$PMA
@@ -194,11 +195,16 @@ if [ -n "$VERSION" ]; then
             # Remove examples-folder
             rm -R $VERBOSELOG $LOCATION/$PMA/examples
             log "PhpMyAdmin successfully updated from version $VERSIONLOCAL to $VERSION in $LOCATION. Enjoy!"
+            
         else
+        
             log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE.";
+        
         fi
     fi
 else
+
     log "Something went wrong while getting the version of phpMyAdmin. :( "
     log "Maybe this link here is dead: $VERSIONLINK";
+    
 fi
