@@ -21,6 +21,10 @@ installation will be installed into "/var/www/pma".
 
 If you want, change the compression type. "tar.bz2", "tar.gz" and "zip" are available.
 
+## User based settings 
+
+Instead of changing the settings in the script, you can place the variables in a user based .pma-updaterc file in the home folder from the user this script runs as.
+
 ## Usage
 For updating phpMyAdmin to the latest version, execute the shell script like this:
 
@@ -29,6 +33,7 @@ For updating phpMyAdmin to the latest version, execute the shell script like thi
 If you want to install a specified version
 
     sh pma-update.sh -r 3.5.0
+    
     
 ### More options
     sh pma-update.sh [-hvf] [-r version]  

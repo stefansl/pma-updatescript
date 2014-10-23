@@ -6,7 +6,29 @@
 # Author: Stefan Schulz-Lauterbach, Michael Riehemann, Igor Buyanov
 ##
 
-command . ./config.sh || echo "No config file found"
+# SETTINGS
+# Please check this settings. Without changing the
+# user and group your installation will not work!
+# 
+# Instead of changing these values below, 
+# you can place them in a .pma-updaterc file in the  
+# home folder from the user this script runs as. 
+##
+
+LOCATION="/var/www"         # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
+PMA=""              # Name of the PMA folder. For example: pma or phpMyAdmin
+LANGUAGE=""         # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
+USER=""             # User of files
+GROUP=""            # Group of files
+CTYPE="tar.bz2"     # Compression type. default "tar.bz2". zip or tar.gz are possible, as well.
+LOGLEVEL=2          # set 0 for quiet mode (no output)
+                    # set 1 to output warnings (DEFAULT)
+                    # set 2 to output all messages
+VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
+FORCE="off"
+
+CONFIG_FILE="$HOME/.pma-updaterc"
+
 
 ################################################
 #                                              #
@@ -25,12 +47,30 @@ usage() {
     echo "-r version    choose a different version than the latest.";
 }
 
+# If user based config exists, load it
+if [ -f $CONFIG_FILE ]; then
+	command . $CONFIG_FILE;
+fi
+
+# Output warnings
+log() {
+    if [ $LOGLEVEL > 0 ]; then
+        echo "$@";
+    fi
+}
+
+
+# Output additional messages
+info() {
+    if [ $LOGLEVEL -eq 2 ]; then
+        echo "$@";
+    fi
+}
 
 # Options
 params="$(getopt -o hvfr: -l help --name "$cmdname" -- "$@")"
 
-if [ $? -ne 0 ]
-then
+if [ $? -ne 0 ]; then
     usage
 fi
 
@@ -54,22 +94,6 @@ do
     esac
     shift
 done
-
-
-# Output warnings
-log() {
-    if [ $LOGLEVEL > 0 ]; then
-        echo "$@";
-    fi
-}
-
-
-# Output additional messages
-info() {
-    if [ $LOGLEVEL -eq 2 ]; then
-        echo "$@";
-    fi
-}
 
 
 # Check settings
