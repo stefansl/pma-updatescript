@@ -20,7 +20,7 @@ PMA=""              # Name of the PMA folder. For example: pma or phpMyAdmin
 LANGUAGE=""         # Language of PMA. Leave it blank for all languages or specify a language pack, for example: english
 USER=""             # User of files
 GROUP=""            # Group of files
-CTYPE="tar.gz"      # Compression type. default "tar.gz". tar.bz2 is possible, as well.
+CTYPE="tar.gz"      # Compression type. default "tar.gz". tar.bz2 is possible, too.
 LOGLEVEL=1          # set 0 for quiet mode (no output)
                     # set 1 to output warnings (DEFAULT)
                     # set 2 to output all messages
@@ -96,11 +96,13 @@ do
     shift
 done
 
+
 # Check location settings
 if [ -z "$LOCATION" -o -z "$PMA" ]; then
     log "Please, check your settings. The variables LOCATION, PMA are mandatory!";
     exit 1;
 fi
+
 
 # Get the local installed version
 if [ -f $LOCATION/$PMA/README ]; then
@@ -120,6 +122,7 @@ fi
 if [ -z "$GROUP" ]; then
     GROUP=$(stat -c "%G" $LOCATION/$PMA/index.php);
 fi
+
 
 # Check user/group settings
 if [ -z "$USER" -o -z "$GROUP" ]; then
@@ -166,18 +169,14 @@ fi
 WGETLOG="-q";
 VERBOSELOG="";
 if [ "$CTYPE" = "tar.gz" ]; then
-	TARLOG="xzf";
+    TARLOG="xzf";
 elif [ "$CTYPE" = "tar.bz2" ]; then
-	TARLOG="xjf";
+    TARLOG="xjf";
 fi
 if [ $LOGLEVEL -eq 2 ]; then
     WGETLOG="-v";
     VERBOSELOG="-v";
-    if [ "$CTYPE" = "tar.gz" ]; then
-		TARLOG="xzfv";
-	elif [ "$CTYPE" = "tar.bz2" ]; then
-		TARLOG="xjfv";
-	fi
+    TARLOG=${TARLOG}v;
 fi
 
 
@@ -197,7 +196,7 @@ if [ -n "$VERSION" ]; then
         wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
         
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]; then
-        
+
             tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE || exit 1;
             mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE/
             rm -R $VERBOSELOG $LOCATION/$PMA
