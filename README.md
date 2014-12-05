@@ -40,3 +40,4 @@ If you want to install a specified version
     -v    output all warnings  
     -f    force download, even if this version is installed already  
     -r version    choose a different version than the latest.  
+    

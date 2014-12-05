@@ -24,6 +24,7 @@ CTYPE="tar.gz"      # Compression type. default "tar.gz". tar.bz2 is possible, t
 LOGLEVEL=1          # set 0 for quiet mode (no output)
                     # set 1 to output warnings (DEFAULT)
                     # set 2 to output all messages
+DELETE=0            # set 1 to delete directory examples
 VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 FORCE="off"
 
@@ -206,8 +207,12 @@ if [ -n "$VERSION" ]; then
             rm $VERBOSELOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
             # Remove setup-folder for security issues
             rm -R $VERBOSELOG $LOCATION/$PMA/setup
-            # Remove examples-folder
-            rm -R $VERBOSELOG $LOCATION/$PMA/examples
+
+            if [ $DELETE -eq 1 ]; then
+                # Remove examples-folder
+                rm -R $VERBOSELOG $LOCATION/$PMA/examples
+            fi
+
             log "PhpMyAdmin successfully updated from version $VERSIONLOCAL to $VERSION in $LOCATION. Enjoy!"
             
         else
