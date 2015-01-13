@@ -26,7 +26,7 @@ VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
 
 # output warnings
 log() {
-    if [ $LOGLEVEL > 0 ]; then
+    if [ $LOGLEVEL -gt 0 ]; then
         echo "$@";
     fi
 }
