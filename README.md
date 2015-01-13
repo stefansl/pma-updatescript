@@ -20,7 +20,7 @@ For updating phpMyAdmin to the latest version, execute the shell script like thi
 
     ./pma-update.sh
 
-If you want to install a specified version
+If you want to install a specific version
 
     ./pma-update.sh 3.5.0
 
