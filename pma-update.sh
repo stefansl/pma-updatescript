@@ -56,7 +56,7 @@ fi
 
 # Output warnings
 log() {
-    if [ $LOGLEVEL > 0 ]; then
+    if [ $LOGLEVEL -gt 0 ]; then
         echo "$@";
     fi
 }
