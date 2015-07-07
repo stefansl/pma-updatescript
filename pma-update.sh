@@ -56,7 +56,7 @@ fi
 
 # Output warnings
 log() {
-    if [ $LOGLEVEL > 0 ]; then
+    if [ $LOGLEVEL -gt 0 ]; then
         echo "$@";
     fi
 }
@@ -193,12 +193,19 @@ if [ -n "$VERSION" ]; then
         pwd;
 
     else
+<<<<<<< HEAD
     
         wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
         
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]; then
 
             tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE || exit 1;
+=======
+        wget $WGETLOG --directory-prefix=$LOCATION http://files.phpmyadmin.net/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
+        if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2" ]
+        then
+            tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
+>>>>>>> ee00c280e4b2bf5328694c044acc1e2cec1e3c9a
             mv $VERBOSELOG $LOCATION/$PMA/config.inc.php $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE/
             rm -R $VERBOSELOG $LOCATION/$PMA
             mv $VERBOSELOG $LOCATION/phpMyAdmin-$VERSION-$LANGUAGE $LOCATION/$PMA
