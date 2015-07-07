@@ -101,7 +101,7 @@ if [ -n "$VERSION" ]; then
         pwd;
 
     else
-        wget $WGETLOG --directory-prefix=$LOCATION http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
+        wget $WGETLOG --directory-prefix=$LOCATION http://files.phpmyadmin.net/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2" ]
         then
             tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.tar.bz2
