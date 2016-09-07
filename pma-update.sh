@@ -25,7 +25,8 @@ LOGLEVEL=1          # set 0 for quiet mode (no output)
                     # set 1 to output warnings (DEFAULT)
                     # set 2 to output all messages
 DELETE=0            # set 1 to delete directory examples
-VERSIONLINK="http://www.phpmyadmin.net/home_page/version.php"
+VERSIONLINK="https://www.phpmyadmin.net/home_page/version.php"
+DOWNLOADURL="https://files.phpmyadmin.net/phpMyAdmin"
 FORCE="off"
 
 CONFIG_FILE=~/.pma-updaterc
@@ -194,7 +195,7 @@ if [ -n "$VERSION" ]; then
 
     else
     
-        wget $WGETLOG --directory-prefix=$LOCATION http://files.phpmyadmin.net/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
+        wget $WGETLOG --directory-prefix=$LOCATION $DOWNLOADURL/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
         
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]; then
 
@@ -217,7 +218,7 @@ if [ -n "$VERSION" ]; then
             
         else
         
-            log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: http://files.phpmyadmin.net/phpMyAdmin/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE.";
+            log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: $DOWNLOADURL/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE.";
         
         fi
     fi
