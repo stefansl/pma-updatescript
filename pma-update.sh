@@ -7,12 +7,12 @@
 ##
 
 # SETTINGS
-# Please check this settings. Without changing 
+# Please check this settings. Without changing
 # location and pma your installation will not work!
-# 
-# Instead of changing these values below, 
-# you can place them in a .pma-updaterc file in the  
-# home folder from the user this script runs as. 
+#
+# Instead of changing these values below,
+# you can place them in a .pma-updaterc file in the
+# home folder from the user this script runs as.
 ##
 
 LOCATION=""         # Directory of PMA installation. Without a slash at the end. For example: LOCATION="/var/www"
@@ -141,7 +141,7 @@ fi
 # Get latest version
 if [ -n "$VERSION" ]; then
 
-    #Check the versions
+    # Check the versions
     if [ "$VERSION" = "$VERSIONLOCAL" ]; then
         info "phpMyAdmin $VERSIONLOCAL is already installed!";
         if [ "$FORCE" != "on" ]; then
@@ -149,14 +149,14 @@ if [ -n "$VERSION" ]; then
         fi
         info "I will install it anyway.";
     fi
-    
+
 else
 
     # Find out latest version
     VERSION=$(wget -q -O /tmp/phpMyAdmin_Update.html $VERSIONLINK && sed -ne '1p' /tmp/phpMyAdmin_Update.html);
 
 
-    #Check the versions
+    # Check the versions
     if [ "$VERSION" = "$VERSIONLOCAL" ]; then
         info "You have the latest version of phpMyAdmin installed!";
         if [ "$FORCE" != "on" ]; then
@@ -189,14 +189,14 @@ if [ -n "$VERSION" ]; then
     MYLOCATION=`pwd`;
 
     if [ $MYLOCATION != $LOCATION ]; then
-    
+
         log "An error occured while changing the directory. Please check your settings! Your given directory: $LOCATION";
         pwd;
 
     else
-    
+
         wget $WGETLOG --directory-prefix=$LOCATION $DOWNLOADURL/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE
-        
+
         if [ -f "$LOCATION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE" ]; then
 
             tar $TARLOG phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE || exit 1;
@@ -215,16 +215,16 @@ if [ -n "$VERSION" ]; then
             fi
 
             log "PhpMyAdmin successfully updated from version $VERSIONLOCAL to $VERSION in $LOCATION. Enjoy!"
-            
+
         else
-        
+
             log "An error occured while downloading phpMyAdmin. Downloading unsuccessful from: $DOWNLOADURL/$VERSION/phpMyAdmin-$VERSION-$LANGUAGE.$CTYPE.";
-        
+
         fi
     fi
 else
 
-    log "Something went wrong while getting the version of phpMyAdmin. :( "
+    log "Something went wrong while getting the version of phpMyAdmin. :("
     log "Maybe this link here is dead: $VERSIONLINK";
-    
+
 fi

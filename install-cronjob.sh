@@ -17,19 +17,18 @@ installcron() {
     break
 }
 
-for file in $CRONPATH ] ; do
-    if [ -f $file ] ; then
+for file in $CRONPATH ]; do
+    if [ -f $file ]; then
         echo "Cronjob for pma-update already exists. Do you want to renew it? [y|N]"
         read answer
-        if [ "$answer" = y -o "$answer" = Y ] ; then
+        if [ "$answer" = y -o "$answer" = Y ]; then
             rm $CRONPATH
             installcron;
         else
             echo "Ok, I did nothing!"
-            break       
-        fi          
+            break
+        fi
     else
         installcron;
     fi
 done
-
